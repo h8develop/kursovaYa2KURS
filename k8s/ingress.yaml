@@ -5,6 +5,7 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  ingressClassName: nginx
   rules:
     - host: frontend.local
       http:
@@ -19,7 +20,7 @@ spec:
     - host: backend.local
       http:
         paths:
-          - path: /docs
+          - path: /
             pathType: Prefix
             backend:
               service:

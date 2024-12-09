@@ -12,9 +12,21 @@ spec:
       labels:
         app: loki
     spec:
+      securityContext:
+        fsGroup: 1000
+      initContainers:
+        - name: init-permissions
+          image: busybox:latest
+          command: ["/bin/sh", "-c"]
+          args: ["mkdir -p /var/loki/index /var/loki/chunks /var/loki/cache && chmod -R 777 /var/loki"]
+          volumeMounts:
+            - name: loki-data
+              mountPath: /var/loki
       containers:
         - name: loki
           image: grafana/loki:2.7.1
+          args:
+            - "-config.file=/etc/loki/loki-config.yaml"
           ports:
             - containerPort: 3100
           volumeMounts:
@@ -23,17 +35,15 @@ spec:
               subPath: loki-config.yaml
             - name: loki-data
               mountPath: /var/loki
-          args:
-            - "-config.file=/etc/loki/loki-config.yaml"
           readinessProbe:
             httpGet:
-              path: "/ready"
+              path: /ready
               port: 3100
             initialDelaySeconds: 5
             periodSeconds: 10
           livenessProbe:
             httpGet:
-              path: "/ready"
+              path: /ready
               port: 3100
             initialDelaySeconds: 15
             periodSeconds: 20
@@ -42,5 +52,4 @@ spec:
           configMap:
             name: loki-configmap
         - name: loki-data
-          persistentVolumeClaim:
-            claimName: loki-pvc
+          emptyDir: {}

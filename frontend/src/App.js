@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import AdList from './components/AdList';
 import axios from 'axios';
+import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
+import Dashboard from './components/Dashboard';
+
+axios.defaults.baseURL = 'http://backend.local';
 
 function App() {
   const [ads, setAds] = useState([]);
@@ -41,28 +45,42 @@ function App() {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Система Управления Рекламными Кампаниями</h1>
-      <div style={{ marginBottom: '20px' }}>
-        <h2>Создать Объявление</h2>
-        <input
-          type="text"
-          placeholder="Название"
-          value={title}
-          onChange={e => setTitle(e.target.value)}
-          style={{ marginRight: '10px' }}
-        />
-        <input
-          type="text"
-          placeholder="Описание"
-          value={description}
-          onChange={e => setDescription(e.target.value)}
-          style={{ marginRight: '10px' }}
-        />
-        <button onClick={createAd}>Создать</button>
+    <Router>
+      <div style={{ padding: '20px' }}>
+        <h1>Система Управления Рекламными Кампаниями</h1>
+        <nav style={{ marginBottom: '20px' }}>
+          <Link to="/" style={{ marginRight: '20px' }}>Главная</Link>
+          <Link to="/dashboard">Аналитика</Link>
+        </nav>
+        <Routes>
+          <Route 
+            path="/" 
+            element={
+              <>
+                <h2>Создать Объявление</h2>
+                <input
+                  type="text"
+                  placeholder="Название"
+                  value={title}
+                  onChange={e => setTitle(e.target.value)}
+                  style={{ marginRight: '10px' }}
+                />
+                <input
+                  type="text"
+                  placeholder="Описание"
+                  value={description}
+                  onChange={e => setDescription(e.target.value)}
+                  style={{ marginRight: '10px' }}
+                />
+                <button onClick={createAd}>Создать</button>
+                <AdList ads={ads} deleteAd={deleteAd} />
+              </>
+            }
+          />
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Routes>
       </div>
-      <AdList ads={ads} deleteAd={deleteAd} />
-    </div>
+    </Router>
   );
 }
 

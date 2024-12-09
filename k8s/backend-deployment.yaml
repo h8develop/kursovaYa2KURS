@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: yourdockerhubusername/ad-management-system-backend:latest
+          image: nedavi/ad-management-system-backend:latest
           ports:
             - containerPort: 8000
           env:

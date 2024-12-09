@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: yourdockerhubusername/ad-management-system-frontend:latest
+          image: nedavi/ad-management-system-frontend:latest
           ports:
             - containerPort: 80
           readinessProbe:
