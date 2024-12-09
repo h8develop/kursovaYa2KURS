@@ -3,10 +3,10 @@ FROM node:16-alpine AS build
 
 WORKDIR /app
 
-COPY package.json yarn.lock ./
+COPY frontend/package.json frontend/yarn.lock ./
 RUN yarn install
 
-COPY . .
+COPY frontend/ .
 RUN yarn build
 
 # Этап сервировки с помощью Nginx
