@@ -4,12 +4,7 @@ function Dashboard() {
 return (
 <div>
     <h2>Analytics Dashboard</h2>
-    <iframe 
-        src="http://grafana.local/d/ce6gdaqyi2eiof/total-ads?orgId=1&refresh=10s" 
-        width="100%" 
-        height="800px"
-        style={{ border: 0 }}
-    />
+    <iframe src="http://localhost:3000/d-solo/ce6gdaqyi2eiof/total-ads?orgId=1&refresh=10s&from=1733798169477&to=1733798469478&timezone=browser&panelId=1&__feature.dashboardSceneSolo" width="450" height="200" frameborder="0"></iframe>
 </div>
 );
 }
