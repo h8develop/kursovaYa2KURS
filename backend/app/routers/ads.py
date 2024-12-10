@@ -4,15 +4,14 @@ from app.schemas import AdCreate, AdRead
 from app.models import Ad
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from backend.main import ads_created_counter, ad_creation_latency  # импортируем метрики
 
 DATABASE_URL = "postgresql://user:password@db:5432/advertising"
-
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 router = APIRouter()
 
-# Зависимость для получения сессии базы данных
 def get_db():
     db = SessionLocal()
     try:
@@ -22,11 +21,14 @@ def get_db():
 
 @router.post("/", response_model=AdRead)
 def create_ad(ad: AdCreate, db: Session = Depends(get_db)):
-    db_ad = Ad(title=ad.title, description=ad.description)
-    db.add(db_ad)
-    db.commit()
-    db.refresh(db_ad)
-    return db_ad
+    with ad_creation_latency.time():
+        db_ad = Ad(title=ad.title, description=ad.description)
+        db.add(db_ad)
+        db.commit()
+        db.refresh(db_ad)
+        # Увеличиваем счетчик после успешного создания
+        ads_created_counter.inc()
+        return db_ad
 
 @router.get("/", response_model=list[AdRead])
 def read_ads(db: Session = Depends(get_db)):

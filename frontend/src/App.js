@@ -47,7 +47,7 @@ function App() {
   return (
     <Router>
       <div style={{ padding: '20px' }}>
-        <h1>Система Управления Рекламными Кампаниями</h1>
+        <h1>Система управления рекламными кампаниями</h1>
         <nav style={{ marginBottom: '20px' }}>
           <Link to="/" style={{ marginRight: '20px' }}>Главная</Link>
           <Link to="/dashboard">Аналитика</Link>
@@ -57,7 +57,7 @@ function App() {
             path="/" 
             element={
               <>
-                <h2>Создать Объявление</h2>
+                <h2>Создать объявление</h2>
                 <input
                   type="text"
                   placeholder="Название"
