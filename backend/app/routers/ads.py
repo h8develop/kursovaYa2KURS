@@ -2,9 +2,10 @@ from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from app.schemas import AdCreate, AdRead
 from app.models import Ad
+from app.metrics import ads_created_counter, ad_creation_latency  # Импорт метрик
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from backend.main import ads_created_counter, ad_creation_latency  # импортируем метрики
 
 DATABASE_URL = "postgresql://user:password@db:5432/advertising"
 engine = create_engine(DATABASE_URL)
@@ -12,6 +13,7 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 router = APIRouter()
 
+# Зависимость для получения сессии базы данных
 def get_db():
     db = SessionLocal()
     try:
@@ -26,7 +28,6 @@ def create_ad(ad: AdCreate, db: Session = Depends(get_db)):
         db.add(db_ad)
         db.commit()
         db.refresh(db_ad)
-        # Увеличиваем счетчик после успешного создания
         ads_created_counter.inc()
         return db_ad
 
