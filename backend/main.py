@@ -1,7 +1,7 @@
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, Response
 from app.routers import ads
-from app.app.models import Base  # Убедитесь, что путь правильный
+from app.models import Base  # Правильный путь
 from sqlalchemy import create_engine
 from prometheus_client import generate_latest
 from app.metrics import ads_created_counter, ad_creation_latency  # Импорт метрик
