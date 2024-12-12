@@ -27,11 +27,12 @@ schema_config:
 
 storage_config:
   boltdb_shipper:
-    active_index_directory: /data/loki/index
-    cache_location: /data/loki/cache
+    active_index_directory: /tmp/loki/index
+    cache_location: /tmp/loki/cache
     shared_store: filesystem
   filesystem:
-    directory: /data/loki/chunks
+    directory: /tmp/loki/chunks
+
 
 limits_config:
   enforce_metric_name: false

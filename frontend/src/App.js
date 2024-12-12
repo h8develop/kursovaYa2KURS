@@ -45,7 +45,7 @@ function App() {
   };
 
   return (
-    <Router>
+    <Router basename="/">
       <div style={{ padding: '20px' }}>
         <h1>Система управления рекламными кампаниями</h1>
         <nav style={{ marginBottom: '20px' }}>
