@@ -20,7 +20,7 @@ data:
         ring:
           kvstore:
             store: inmemory
-        final_sleep: 0s
+          replication_factor: 1
 
     limits_config:
       reject_old_samples: true
@@ -38,10 +38,10 @@ data:
 
     storage_config:
       boltdb_shipper:
-        active_index_directory: /var/loki/index
+        active_index_directory: /tmp/loki/index
         shared_store: filesystem
       filesystem:
-        directory: /var/loki/chunks
+        directory: /tmp/loki/chunks
 
     querier:
       query_ingesters_within: 2h

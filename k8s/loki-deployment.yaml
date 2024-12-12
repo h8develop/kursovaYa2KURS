@@ -18,7 +18,8 @@ spec:
         - name: init-permissions
           image: busybox:latest
           command: ["/bin/sh", "-c"]
-          args: ["mkdir -p /tmp/loki/index /tmp/loki/chunks /tmp/loki/cache && chmod -R 777 /tmp/loki"]
+          args:
+            - mkdir -p /tmp/loki/index /tmp/loki/chunks /tmp/loki/cache && chmod -R 777 /tmp/loki
           volumeMounts:
             - name: loki-data
               mountPath: /tmp/loki
@@ -52,4 +53,4 @@ spec:
           configMap:
             name: loki-configmap
         - name: loki-data
-          emptyDir: {} # Используем временное хранилище (замените на hostPath для постоянного)
+          emptyDir: {}
