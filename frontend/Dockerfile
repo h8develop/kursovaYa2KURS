@@ -3,18 +3,21 @@ FROM node:16-alpine AS build
 
 WORKDIR /app
 
-COPY frontend/package.json frontend/yarn.lock ./
+# Копируем только необходимые файлы для установки зависимостей
+COPY ./frontend/package.json ./frontend/yarn.lock ./
 RUN yarn install
 
-COPY frontend/ ./
+# Копируем все файлы проекта во временный контейнер
+COPY ./frontend/ ./
 RUN yarn build
 
 # Этап сервировки с помощью Nginx
 FROM nginx:alpine
 
+# Копируем сборку React в Nginx
 COPY --from=build /app/build /usr/share/nginx/html
 
-# Добавление настройки Nginx для поддержки маршрутов React
+# Создаем корректный файл конфигурации Nginx
 RUN echo 'server {\n\
     listen 80;\n\
     server_name localhost;\n\
