@@ -3,7 +3,7 @@ import React from 'react';
 function AdList({ ads, deleteAd }) {
   return (
     <div>
-      <h2>Список Объявлений</h2>
+      <h2>Список объявлений</h2>
       {ads.length === 0 ? (
         <p>Нет объявлений.</p>
       ) : (
