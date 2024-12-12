@@ -18,10 +18,10 @@ spec:
         - name: init-permissions
           image: busybox:latest
           command: ["/bin/sh", "-c"]
-          args: ["mkdir -p /var/loki/index /var/loki/chunks /var/loki/cache && chmod -R 777 /var/loki"]
+          args: ["mkdir -p /tmp/loki/index /tmp/loki/chunks /tmp/loki/cache && chmod -R 777 /tmp/loki"]
           volumeMounts:
             - name: loki-data
-              mountPath: /var/loki
+              mountPath: /tmp/loki
       containers:
         - name: loki
           image: grafana/loki:2.7.1
@@ -34,7 +34,7 @@ spec:
               mountPath: /etc/loki/loki-config.yaml
               subPath: loki-config.yaml
             - name: loki-data
-              mountPath: /var/loki
+              mountPath: /tmp/loki
           readinessProbe:
             httpGet:
               path: /ready
@@ -52,4 +52,6 @@ spec:
           configMap:
             name: loki-configmap
         - name: loki-data
-          emptyDir: {}
+          hostPath:
+            path: /tmp/loki
+            type: DirectoryOrCreate
