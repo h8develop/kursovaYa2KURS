@@ -6,7 +6,7 @@ WORKDIR /app
 COPY frontend/package.json frontend/yarn.lock ./
 RUN yarn install
 
-COPY . .
+COPY frontend/ ./
 RUN yarn build
 
 # Этап сервировки с помощью Nginx
@@ -14,7 +14,7 @@ FROM nginx:alpine
 
 COPY --from=build /app/build /usr/share/nginx/html
 
-# Добавление настройки для маршрутов React
+# Добавление настройки Nginx для поддержки маршрутов React
 RUN echo 'server {\n\
     listen 80;\n\
     server_name localhost;\n\

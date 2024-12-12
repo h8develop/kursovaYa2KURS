@@ -52,6 +52,4 @@ spec:
           configMap:
             name: loki-configmap
         - name: loki-data
-          hostPath:
-            path: /tmp/loki
-            type: DirectoryOrCreate
+          emptyDir: {} # Используем временное хранилище (замените на hostPath для постоянного)
