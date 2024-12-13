@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-configmap
+data:
+  grafana.ini: |
+    [server]
+    protocol = http
+    http_port = 3000
+
+    [security]
+    allow_embedding = true
+    x_frame_options = allow
+
+    [auth.anonymous]
+    enabled = true
+    org_name = Main Org.
+    org_role = Viewer
