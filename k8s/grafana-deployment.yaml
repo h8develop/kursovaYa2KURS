@@ -24,19 +24,28 @@ spec:
             - name: grafana-config
               mountPath: /etc/grafana/grafana.ini
               subPath: grafana.ini
+            - name: grafana-data
+              mountPath: /var/lib/grafana
           readinessProbe:
             httpGet:
               path: "/api/health"
               port: 3000
-            initialDelaySeconds: 5
-            periodSeconds: 10
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 3
+            timeoutSeconds: 2
           livenessProbe:
             httpGet:
               path: "/api/health"
               port: 3000
             initialDelaySeconds: 15
-            periodSeconds: 20
+            periodSeconds: 10
+            failureThreshold: 3
+            timeoutSeconds: 2
       volumes:
         - name: grafana-config
           configMap:
             name: grafana-configmap
+        - name: grafana-data
+          persistentVolumeClaim:
+            claimName: grafana-pvc
